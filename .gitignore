@@ -36,3 +36,5 @@ tmp/
 
 .cursorrules
 .cursor/*
+claude.md
+*.mdc
