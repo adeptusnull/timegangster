@@ -49,8 +49,4 @@ temp/
 tmp/
 .cache/
 
-.cursorrules
-.cursor/*
-claude.md
-*.mdc
 eslint.config.js
