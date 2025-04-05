@@ -38,3 +38,4 @@ tmp/
 .cursor/*
 claude.md
 *.mdc
+eslint.config.js
