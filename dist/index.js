@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { DateTime } from 'luxon';
 import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';

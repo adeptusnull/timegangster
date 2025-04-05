@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { z } from 'zod';
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
 export declare const timezoneSchema: z.ZodString;

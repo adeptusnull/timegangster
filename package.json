@@ -1,14 +1,27 @@
 {
-  "name": "timegangster",
+  "name": "mcp-timegangster",
   "version": "1.0.0",
-  "description": "MCP server for time-related functionalities",
+  "description": "MCP server for time-related functionalities and timezone conversions",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "lint": "eslint src/**/*.ts",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest",
-    "start": "node dist/index.js"
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --forceExit",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run lint && npm test && npm run build"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "bin": {
+    "timegangster": "./dist/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -17,9 +30,12 @@
   "keywords": [
     "mcp",
     "time",
-    "timezone"
+    "timezone",
+    "date",
+    "conversion",
+    "model-context-protocol"
   ],
-  "author": "",
+  "author": "Claude <claude@anthropic.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/adeptusnull/timegangster/issues"
