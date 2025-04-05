@@ -5,21 +5,11 @@ alwaysApply: true
 ---
 # MCP TypeScript SDK Guide
 
-[![NPM Version](mdc:https:/img.shields.io/npm/v/@modelcontextprotocol/sdk.svg)](https://www.npmjs.com/package/@modelcontextprotocol/sdk)
-[![MIT License](mdc:https:/img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
-## Table of Contents
-- [Overview](mdc:#overview)
-- [Installation](mdc:#installation)
-- [Build & Test Commands](mdc:#build--test-commands)
-- [Code Style Guidelines](mdc:#code-style-guidelines)
-- [Project Structure](mdc:#project-structure)
-- [Quick Start](mdc:#quick-start)
-- [What is MCP?](mdc:#what-is-mcp)
-- [Core Concepts](mdc:#core-concepts)
-  - [Server](mdc:#server)
-  - [Resources](mdc:#resources)
-  - [Tools](mdc:#tools)
+](https://img.shields.io/npm/v/@modelcontextprotocol/sdk.svw.npmjs.com/package/@modelcontextprk)
+e](/bavg)le - [ervlatiotallauild  Commuil[Code Guidstylet S(#prore)
+-quiat iscp)
+-re-co
+  #re[Tools)
   - [Prompts](mdc:#prompts)
 - [Running Your Server](mdc:#running-your-server)
   - [stdio](mdc:#stdio)
@@ -587,7 +577,7 @@ This setup allows you to:
 - Use `@modelcontextprotocol/sdk` for server implementation
 - Implement MCP tool discovery (`tools/list`) and invocation (`tools/call`)
 - Define tools with clear input/output schemas using Zod
-- Handle timezone operations using Luxon, default being eastern standard time
+- Handle timezone operations using Luxon
 - Support ISO 8601 compliant date/time formats
 
 ## Architecture Guidelines
@@ -595,7 +585,7 @@ This setup allows you to:
 - Pure MCP server implementation using `@modelcontextprotocol/sdk`
 - Focus on tool-based architecture for operations
 - Implement proper error handling and validation
-- Support timezone-aware operations where needed, default timezone being eastern standard time, unless specified by user. 
+- Support timezone-aware operations where needed
 - Ensure thread safety for concurrent tool invocations
 
 ## Documentation
