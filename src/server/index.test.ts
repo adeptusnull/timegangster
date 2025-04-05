@@ -1,6 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { z } from "zod";
 import { MockTransport } from "./mock-transport.js";
+import { timeResource } from "../resources/time.js";
+import { convertTimeTool } from "../tools/convert-time.js";
+import { timeQueryPrompt } from "../prompts/time-query.js";
 
 describe('MCP Server', () => {
   let server: McpServer;
@@ -12,13 +14,25 @@ describe('MCP Server', () => {
       version: "1.0.0"
     });
 
-    // Add test tool
+    // Register resources
+    server.resource(
+      timeResource.name,
+      timeResource.template,
+      timeResource.handler
+    );
+
+    // Register tools
     server.tool(
-      "test",
-      { message: z.string() },
-      async ({ message }) => ({
-        content: [{ type: "text", text: `Test successful: ${message}` }]
-      })
+      convertTimeTool.name,
+      convertTimeTool.schema,
+      convertTimeTool.handler
+    );
+
+    // Register prompts
+    server.prompt(
+      timeQueryPrompt.name,
+      timeQueryPrompt.schema,
+      timeQueryPrompt.handler
     );
 
     // Connect to transport
@@ -30,21 +44,68 @@ describe('MCP Server', () => {
     await server.close();
   });
 
-  it('should handle test tool correctly', async () => {
-    const testMessage = "Hello, World!";
+  it('should handle time resource correctly', async () => {
+    const response = await transport.sendRequest({
+      jsonrpc: "2.0",
+      id: "1",
+      method: "resources/read",
+      params: {
+        uri: "time://UTC"
+      }
+    });
+    
+    expect(response).toBeDefined();
+    expect(response).toHaveProperty('result');
+    expect(response.result).toHaveProperty('contents');
+    const content = JSON.parse(response.result.contents[0].text);
+    expect(content.timezone).toBe("UTC");
+    expect(content).toHaveProperty('currentTime');
+    expect(content).toHaveProperty('isDST');
+    expect(content).toHaveProperty('offset');
+  });
+
+  it('should handle time conversion tool correctly', async () => {
     const response = await transport.sendRequest({
       jsonrpc: "2.0",
       id: "1",
       method: "tools/call",
       params: {
-        name: "test",
-        arguments: { message: testMessage }
+        name: "convert-time",
+        arguments: {
+          sourceTimezone: "UTC",
+          targetTimezone: "America/New_York",
+          datetime: "2024-01-01T12:00:00Z"
+        }
       }
     });
     
     expect(response).toBeDefined();
     expect(response).toHaveProperty('result');
     expect(response.result).toHaveProperty('content');
-    expect(response.result.content[0].text).toBe(`Test successful: ${testMessage}`);
+    const content = JSON.parse(response.result.content[0].text);
+    expect(content.source.timezone).toBe("UTC");
+    expect(content.target.timezone).toBe("America/New_York");
+    expect(content).toHaveProperty('difference');
+  });
+
+  it('should handle time query prompt correctly', async () => {
+    const response = await transport.sendRequest({
+      jsonrpc: "2.0",
+      id: "1",
+      method: "prompts/get",
+      params: {
+        name: "time-query",
+        arguments: {
+          query: "What time is it?",
+          timezone: "UTC"
+        }
+      }
+    });
+    
+    expect(response).toBeDefined();
+    expect(response).toHaveProperty('result');
+    expect(response.result).toHaveProperty('messages');
+    expect(response.result.messages[0].content.text).toContain("What time is it?");
+    expect(response.result.messages[0].content.text).toContain("UTC");
   });
 }); 
