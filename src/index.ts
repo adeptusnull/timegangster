@@ -10,6 +10,32 @@ import { Tool } from '@modelcontextprotocol/sdk/types.js';
 export const timezoneSchema = z.string().regex(/^[A-Za-z_]+\/[A-Za-z_]+$/);
 export const timeSchema = z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/);
 
+// Define the handler type for the current time tool
+type GetCurrentTimeHandler = (params: { timezone?: string }) => Promise<{
+  timezone: string;
+  datetime: string;
+  is_dst: boolean;
+}>;
+
+// Define the handler type for the convert time tool
+type ConvertTimeHandler = (params: { 
+  source_timezone: string; 
+  time: string; 
+  target_timezone: string
+}) => Promise<{
+  source: {
+    timezone: string;
+    datetime: string;
+    is_dst: boolean;
+  };
+  target: {
+    timezone: string;
+    datetime: string;
+    is_dst: boolean;
+  };
+  time_difference: string;
+}>;
+
 // Get current time tool
 export const getCurrentTimeTool: Tool = {
   name: 'get_current_time',
@@ -25,7 +51,7 @@ export const getCurrentTimeTool: Tool = {
     },
     required: []
   },
-  handler: async (params: { timezone?: string }) => {
+  handler: (async (params: { timezone?: string }) => {
     const timezone = params.timezone || DateTime.local().zoneName;
     const now = DateTime.now().setZone(timezone);
     
@@ -34,7 +60,7 @@ export const getCurrentTimeTool: Tool = {
       datetime: now.toISO(),
       is_dst: now.isInDST
     };
-  }
+  }) as unknown as Tool['handler']
 };
 
 // Convert time tool
@@ -62,7 +88,7 @@ export const convertTimeTool: Tool = {
     },
     required: ['source_timezone', 'time', 'target_timezone']
   },
-  handler: async (params: { source_timezone: string; time: string; target_timezone: string }) => {
+  handler: (async (params: { source_timezone: string; time: string; target_timezone: string }) => {
     const [hours, minutes] = params.time.split(':').map(Number);
     const today = DateTime.now().setZone(params.source_timezone);
     const sourceTime = today.set({ hour: hours, minute: minutes });
@@ -82,15 +108,15 @@ export const convertTimeTool: Tool = {
       },
       time_difference: `${diffHours >= 0 ? '+' : ''}${diffHours.toFixed(1)}h`
     };
-  }
+  }) as unknown as Tool['handler']
 };
 
 // Create and start MCP server
 export async function main(): Promise<void> {
   try {
     const server = new McpServer({
-      name: 'mcp-time-dancer',
-      version: '1.0.0',
+      name: '@nulldevide/mcp-timegangster',
+      version: '1.0.4',
       tools: [getCurrentTimeTool, convertTimeTool]
     });
 
@@ -103,7 +129,4 @@ export async function main(): Promise<void> {
   }
 }
 
-// Run as MCP server if executed directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch(console.error);
-}
+main();
