@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest src/server/index.test.ts",
     "lint": "eslint .",
     "start": "node dist/index.js",
     "prepublishOnly": "npm run build"

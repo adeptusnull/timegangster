@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { Tool } from '@modelcontextprotocol/sdk/types.js';
+import './server/index.js';
 
 // Zod schemas for input validation
 export const timezoneSchema = z.string().regex(/^[A-Za-z_]+\/[A-Za-z_]+$/);
