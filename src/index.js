@@ -81,7 +81,7 @@ export const convertTimeTool = {
 export async function main() {
     try {
         const server = new McpServer({
-            name: '@nulldevide/mcp-timegangster',
+            name: 'mcp-timegangster',
             version: '1.0.4',
             tools: [getCurrentTimeTool, convertTimeTool]
         });

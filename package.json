@@ -1,5 +1,5 @@
 {
-  "name": "@nulldevide/mcp-timegangster",
+  "name": "mcp-timegangster",
   "version": "1.0.4",
   "description": "MCP server for time-related functionalities and timezone conversions",
   "type": "module",
@@ -32,7 +32,7 @@
     "conversion",
     "model-context-protocol"
   ],
-  "author": "Claude <claude@anthropic.com>",
+  "author": "adeptusnull <dev@adeptusnull.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/adeptusnull/timegangster/issues"
