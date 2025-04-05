@@ -1,4 +1,19 @@
-# Dependencies
+# Ignore everything
+*
+
+# Except JavaScript files
+!*.js
+
+# Except TypeScript files
+!*.ts
+
+# Except directories (necessary to allow files within them)
+!*/
+
+# Allow this .gitignore file
+!.gitignore
+
+# dependencies
 node_modules/
 package-lock.json
 yarn.lock
