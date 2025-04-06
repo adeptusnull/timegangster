@@ -26,16 +26,21 @@ export const getCurrentTimeTool: Tool = {
     },
     required: []
   },
-  handler: (async (params: { timezone?: string }) => {
+  handler: async (params: { timezone?: string }) => {
     const timezone = params.timezone || DateTime.local().zoneName;
     const now = DateTime.now().setZone(timezone);
     
     return {
-      timezone,
-      datetime: now.toISO(),
-      is_dst: now.isInDST
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          timezone,
+          datetime: now.toISO(),
+          is_dst: now.isInDST
+        }, null, 2)
+      }]
     };
-  }) as unknown as Tool['handler']
+  }
 };
 
 // Convert time tool
@@ -63,7 +68,7 @@ export const convertTimeTool: Tool = {
     },
     required: ['source_timezone', 'time', 'target_timezone']
   },
-  handler: (async (params: { source_timezone: string; time: string; target_timezone: string }) => {
+  handler: async (params: { source_timezone: string; time: string; target_timezone: string }) => {
     const [hours, minutes] = params.time.split(':').map(Number);
     const today = DateTime.now().setZone(params.source_timezone);
     const sourceTime = today.set({ hour: hours, minute: minutes });
@@ -71,19 +76,24 @@ export const convertTimeTool: Tool = {
     const diffHours = targetTime.diff(sourceTime, 'hours').hours;
     
     return {
-      source: {
-        timezone: params.source_timezone,
-        datetime: sourceTime.toISO(),
-        is_dst: sourceTime.isInDST
-      },
-      target: {
-        timezone: params.target_timezone,
-        datetime: targetTime.toISO(),
-        is_dst: targetTime.isInDST
-      },
-      time_difference: `${diffHours >= 0 ? '+' : ''}${diffHours.toFixed(1)}h`
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          source: {
+            timezone: params.source_timezone,
+            datetime: sourceTime.toISO(),
+            is_dst: sourceTime.isInDST
+          },
+          target: {
+            timezone: params.target_timezone,
+            datetime: targetTime.toISO(),
+            is_dst: targetTime.isInDST
+          },
+          time_difference: `${diffHours >= 0 ? '+' : ''}${diffHours.toFixed(1)}h`
+        }, null, 2)
+      }]
     };
-  }) as unknown as Tool['handler']
+  }
 };
 
 // Create and start MCP server
@@ -97,7 +107,6 @@ export async function main(): Promise<void> {
 
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.log('MCP server started successfully');
   } catch (error) {
     console.error('Failed to start MCP server:', error);
     process.exit(1);

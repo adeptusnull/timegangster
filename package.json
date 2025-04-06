@@ -1,6 +1,6 @@
 {
   "name": "mcp-timegangster",
-  "version": "1.0.4",
+  "version": "1.0.7",
   "description": "MCP server for time-related functionalities and timezone conversions",
   "type": "module",
   "main": "dist/index.js",
