@@ -1,20 +1,20 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const timeQueryPrompt = {
-  name: "time-query",
+  name: 'time-query',
   schema: {
     query: z.string(),
     timezone: z.string().optional()
   },
   handler: ({ query, timezone }: { query: string; timezone?: string }) => ({
     messages: [{
-      role: "user",
+      role: 'user',
       content: {
-        type: "text",
-        text: `Please help me with this time-related query: "${query}"${
-          timezone ? ` in the timezone ${timezone}` : ""
+        type: 'text',
+        text: `Please help me with this time-related query: '${query}'${
+          timezone ? ` in the timezone ${timezone}` : ''
         }.`
       }
     }]
   })
-}; 
+};

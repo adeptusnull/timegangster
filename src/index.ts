@@ -11,32 +11,6 @@ import './server/index.js';
 export const timezoneSchema = z.string().regex(/^[A-Za-z_]+\/[A-Za-z_]+$/);
 export const timeSchema = z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/);
 
-// Define the handler type for the current time tool
-type GetCurrentTimeHandler = (params: { timezone?: string }) => Promise<{
-  timezone: string;
-  datetime: string;
-  is_dst: boolean;
-}>;
-
-// Define the handler type for the convert time tool
-type ConvertTimeHandler = (params: { 
-  source_timezone: string; 
-  time: string; 
-  target_timezone: string
-}) => Promise<{
-  source: {
-    timezone: string;
-    datetime: string;
-    is_dst: boolean;
-  };
-  target: {
-    timezone: string;
-    datetime: string;
-    is_dst: boolean;
-  };
-  time_difference: string;
-}>;
-
 // Get current time tool
 export const getCurrentTimeTool: Tool = {
   name: 'get_current_time',

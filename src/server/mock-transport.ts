@@ -1,8 +1,7 @@
-import { Transport } from "@modelcontextprotocol/sdk/shared/transport.js";
-import { JSONRPCMessage } from "@modelcontextprotocol/sdk/types.js";
+import { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
+import { JSONRPCMessage } from '@modelcontextprotocol/sdk/types.js';
 
 export class MockTransport implements Transport {
-  private lastResponse: JSONRPCMessage | undefined;
   private isStarted = false;
   private responsePromise: Promise<JSONRPCMessage> | undefined;
   private resolveResponse: ((message: JSONRPCMessage) => void) | undefined;
@@ -12,7 +11,6 @@ export class MockTransport implements Transport {
   }
 
   async send(message: JSONRPCMessage): Promise<void> {
-    this.lastResponse = message;
     if (this.resolveResponse) {
       this.resolveResponse(message);
       this.resolveResponse = undefined;
@@ -28,12 +26,12 @@ export class MockTransport implements Transport {
   onclose?: () => void;
   onerror?: (error: Error) => void;
   onmessage?: (message: JSONRPCMessage) => void;
-  sessionId?: string = "test-session";
+  sessionId?: string = 'test-session';
 
   // Helper method for tests
   async sendRequest(request: JSONRPCMessage): Promise<JSONRPCMessage> {
     if (!this.isStarted) {
-      throw new Error("Transport not started");
+      throw new Error('Transport not started');
     }
 
     this.responsePromise = new Promise((resolve) => {
